@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.olayg.taskapp.adapter.NumberListAdapter
 import com.olayg.taskapp.adapter.NumberRecyclerViewAdapter
 import com.olayg.taskapp.databinding.FragmentNumberBinding
@@ -37,6 +39,11 @@ class NumberFragment : Fragment(), NumberRecyclerViewAdapter.NumberRecyclerViewL
                 viewModel.updateList()
             }
             rvNumbers.adapter = numbersRvAdapter
+        }
+
+        (requireActivity() as MainActivity).setToolbarListener { isList ->
+            binding.rvNumbers.layoutManager = if (isList) GridLayoutManager(context, 2)
+            else LinearLayoutManager(context)
         }
 
         viewModel.numbersLD.observe(viewLifecycleOwner) {
