@@ -11,11 +11,15 @@ private val DIFF_CALLBACK : DiffUtil.ItemCallback<Int> = object : DiffUtil.ItemC
     override fun areContentsTheSame(oldItem: Int, newItem: Int) = oldItem == newItem
 }
 
-class NumberListAdapter : ListAdapter<Int, NumberViewHolder>(DIFF_CALLBACK) {
+class NumberListAdapter(
+    private val clickListener: (Int) -> Unit
+) : ListAdapter<Int, NumberViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NumberViewHolder {
         val binding = ItemNumberBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NumberViewHolder(binding)
+        return NumberViewHolder(binding).apply {
+            itemView.setOnClickListener { clickListener.invoke(getItem(adapterPosition)) }
+        }
     }
 
     override fun onBindViewHolder(holder: NumberViewHolder, position: Int) = with(holder) {
